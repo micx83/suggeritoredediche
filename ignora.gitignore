@@ -1,6 +1,0 @@
-.gitignore
-# Ignora tutti i file che terminano con .env
-*.env
-
-# Ignora il file di configurazione specifico
-config.json
