@@ -1,30 +1,27 @@
+body {
+  font-family: sans-serif;
+}
+
 .container {
   width: 80%;
   margin: 0 auto;
   text-align: center;
 }
 
-input[type="text"] {
-  width: 100%;
+#question-input {
+  width: 50%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
 }
 
-button {
-  padding: 10px 20px;
+#ask-button {
+  padding: 10px;
   background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-#dedication-suggestions {
+#response-container {
   margin-top: 20px;
-}
-
-#dedication-suggestions p {
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  padding: 10px;
 }
