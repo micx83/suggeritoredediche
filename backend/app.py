@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 import vertexai
 
-app = Flask(__name__, static_url_path='suggeritoredediche/static')
+app = Flask(__name__, static_url_path='/static')
 socketio = SocketIO(app)
 
 vertexai.init(project="gemini-1.5-pro-preview-0409", location="us-central1")
