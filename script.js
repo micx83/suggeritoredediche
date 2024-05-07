@@ -21,3 +21,20 @@ chatInput.addEventListener('keydown', (event) => {
 
 socket.on('chat response', (response) => {
     receiveMessage(response, 'bot-message');
+});
+
+function sendMessage(messageText) {
+    const userMessage = createMessage(messageText, 'user-message');
+    messagesList.appendChild(userMessage);
+    socket.emit('chat message', messageText);
+}
+
+function receiveMessage(messageText, className) {
+    const botMessage = createMessage(messageText, className);
+    messagesList.appendChild(botMessage);
+}
+
+function createMessage(messageText, className) {
+    const messageElement = document.createElement('li');
+    messageElement.classList.add('message', className);
+    messageElement.textContent =
