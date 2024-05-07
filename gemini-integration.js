@@ -1,9 +1,5 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
 const apiKey = process.env.GEMINI_API_KEY;
 console.log(`API Key: ${apiKey}`);
-
 
 function generateDedicationSuggestions(query) {
   const prompt = `Scrivi una dedica per ${query}`;
