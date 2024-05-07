@@ -1,0 +1,30 @@
+.container {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#dedication-suggestions {
+  margin-top: 20px;
+}
+
+#dedication-suggestions p {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
