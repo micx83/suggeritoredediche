@@ -1,5 +1,5 @@
-// Sostituisci "YOUR_API_KEY" con la tua chiave API Gemini
-const apiKey = "AIzaSyC6NK5RlRASohfhODO-7zDDZO-WgEeoM8U";
+// Non includere l'API Key qui!
+const apiKey = process.env.GEMINI_API_KEY;
 
 function generateDedicationSuggestions(query) {
   const prompt = `Scrivi una dedica per ${query}`;
@@ -45,3 +45,4 @@ $(document).ready(function() {
     }
   });
 });
+
