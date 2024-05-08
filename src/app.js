@@ -1,36 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/style.css';
+const {GoogleAuth} = require('google-auth-library');
 
 // Sostituisci con il tuo ID del progetto Vertex AI
-const projectId = 'YOUR_PROJECT_ID';
+const projectId = 'martina-ai-417614';
 
 // Sostituisci con il nome del tuo prompt Vertex AI
-const promptId = 'YOUR_PROMPT_ID'; // Sostituisci con l'ID del tuo prompt
+const promptId = 'suggeritore'; // Sostituisci con l'ID del tuo prompt
+
+// Percorso del file di chiavi di servizio
+const keyFilePath = '/path/to/your/keyfile.json'; // Sostituisci con il percorso del tuo file di chiavi di servizio
 
 // Funzione per inviare una richiesta all'API Vertex AI
 async function sendRequest(text) {
-  const accessToken = await getAccessToken(); // Funzione per ottenere l'access token
-  const response = await fetch(`https://vertex.googleapis.com/v1/projects/${projectId}/locations/us-central1/models/${promptId}:predict`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      inputs: {
-        text: text
-      }
-    })
-  });
-  const data = await response.json();
-  return data.outputs.text[0].text;
+  try {
+    const accessToken = await getAccessToken(); // Funzione per ottenere l'access token
+    const response = await fetch(`https://vertex.googleapis.com/v1/projects/${projectId}/locations/us-central1/models/${promptId}:predict`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        inputs: {
+          text: text
+        }
+      })
+    });
+    const data = await response.json();
+    return data.outputs.text[0].text;
+  } catch (error) {
+    console.error('Error during API request', error);
+    return null;
+  }
 }
 
 // Funzione per ottenere l'access token dall'account di servizio
 async function getAccessToken() {
-  // Implementa la logica per ottenere l'access token dalle credenziali del tuo account di servizio
-  // (ad esempio, utilizzando la libreria Google Cloud Node.js)
+  const auth = new GoogleAuth({
+    keyFilename: keyFilePath,
+    scopes: ['https://www.googleapis.com/auth/cloud-platform']
+  });
+  const accessTokenInfo = await auth.getAccessToken();
+  return accessTokenInfo.token;
 }
 
 // Componente React principale
