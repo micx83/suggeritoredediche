@@ -66,6 +66,11 @@
         <textarea id="message" placeholder="Scrivi un messaggio"></textarea>
     </div>
 
+  <script>
+        // Accesso al segreto GEMINI_API_KEY
+        const API_KEY = process.env.GEMINI_API_KEY;
+    </script>
+    
     <script type="importmap">
       {
         "imports": {
@@ -75,9 +80,6 @@
     </script>
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
-
-  // Accesso al segreto GEMINI_API_KEY
-        const API_KEY = process.env.GEMINI_API_KEY;
 
         // Accesso all'API key
         const genAI = new GoogleGenerativeAI(API_KEY);
