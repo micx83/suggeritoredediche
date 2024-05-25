@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat con MartinaAI</title>
+    <style>
+        /* Your CSS styles here */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        #chatbox {
+            width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .messages {
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .user {
+            background-color: #4285f4;
+            color: #fff;
+        }
+
+        .ai {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        #message {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <h2>MartinaAI - Aiuto per incisioni e dediche</h2>
+        <div class="messages"></div>
+        <textarea id="message" placeholder="Scrivi un messaggio"></textarea>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // Sostituisci con la tua API_KEY
+        const API_KEY = "";
+
+        // Accesso all'API key
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        // Modello Gemini 1.5 adatto per questo caso d'uso
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest"});
+
+        const messageBox = document.querySelector(".messages");
+        const messageInput = document.getElementById("message");
+
+        messageInput.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === "") return;
+
+            addMessage(message, "user");
+            messageInput.value = "";
+
+            if (message === "ciao") {
+                addMessage("Ciao, sono Martina AI, la tua assistente per consigli su incisioni e dediche per gioielli e creazioni. Come posso aiutarti oggi?", "ai");
+                return;
+            }
+
+            const result = await model.generateContent(message);
+            const response = await result.response;
+            const text = response.text();
+
+            // Verifica se la risposta è pertinente all'argomento
+            if ( !text.includes("incisione") && !text.includes("dedica") && !text.includes("gioiello") && !text.includes("anello") && !text.includes("bracciale") && !text.includes("collana") && !text.includes("frase") && !text.includes("parola") && !text.includes("messaggio") && !text.includes("simbolo") && !text.includes("personalizzazione") && !text.includes("idea") && !text.includes("suggerimento") && !text.includes("ispirazione") ) {
+                addMessage("Scusa, preferirei rimanere su consigli per incisioni e dediche sui gioielli. ", "ai");
+                return;
+            }
+
+            // Salva la conversazione nel Local Storage
+            const conversation = loadConversation();
+            conversation.push({ user: message, bot: text });
+            saveConversation(conversation);
+
+            // Stampa il testo via via che viene elaborato
+            let i = 0;
+            const intervalId = setInterval(() => {
+                if (i < text.length) {
+                    addMessage(text.substring(0, i + 1), "ai");
+                    i++;
+                } else {
+                    clearInterval(intervalId);
+                }
+            }, 50);
+        }
+
+        function addMessage(message, type) {
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message", type);
+            messageElement.textContent = message;
+            messageBox.appendChild(messageElement);
+            messageBox.scrollTop = messageBox.scrollHeight;
+        }
+
+        // Funzioni per il Local Storage
+        function saveConversation(conversation) {
+            localStorage.setItem("conversation", JSON.stringify(conversation));
+        }
+
+        function loadConversation() {
+            const conversation = localStorage.getItem("conversation");
+            if (conversation) {
+                return JSON.parse(conversation);
+            } else {
+                return [];
+            }
+        }
+    </script>
+</body>
+</html>
